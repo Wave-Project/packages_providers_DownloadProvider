@@ -52,6 +52,7 @@ import android.os.ParcelFileDescriptor.OnCloseListener;
 import android.os.Process;
 import android.provider.BaseColumns;
 import android.provider.Downloads;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -1271,8 +1272,8 @@ public final class DownloadProvider extends ContentProvider {
                         if (!TextUtils.isEmpty(mediaUri)) {
                             final long token = Binder.clearCallingIdentity();
                             try {
-                                getContext().getContentResolver().delete(Uri.parse(mediaUri), null,
-                                        null);
+                                getContext().getContentResolver().delete(Uri.parse(mediaUri),
+                                        MediaStore.MediaColumns.DATA + "= ?", new String[]{path});
                             } catch (Exception e) {
                                 Log.w(Constants.TAG, "Failed to delete media entry: " + e);
                             } finally {
